@@ -1,0 +1,25 @@
+<mat-card class="main" style="max-width: 190px">
+  <mat-card-header style="height: 100px;">
+    <mat-card-title>{{this.movie.title}}</mat-card-title>
+    <mat-card-subtitle>rank : {{this.movie.rank}}</mat-card-subtitle>
+  </mat-card-header>
+
+  <img
+    mat-card-image
+    height="330px"
+    style="object-fit: cover;"
+    src="{{this.movie.image_url}}"
+  />
+  <mat-card-content>
+    <p>
+      Score:{{this.movie.score}}
+    </p>
+    <p>
+      Episode:{{this.movie.episodes}}
+    </p>  
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-flat-button color="primary">Detail</button>
+    <button mat-button color="accent">Myanime List</button>
+  </mat-card-actions>
+</mat-card>
