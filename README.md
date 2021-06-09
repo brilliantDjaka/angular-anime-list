@@ -1,1 +1,1 @@
-angular anime list
+angular anime list 
