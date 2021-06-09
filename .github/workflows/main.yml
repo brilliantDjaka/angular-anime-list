@@ -1,19 +1,32 @@
-name: Scully Publish
+name: Build and Deploy
 
 on:
   push:
     branches:
       - master
-
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-      - uses: cmgriffing/scully-gh-pages-action@v9
-        with:
-          access-token: ${{ secrets.ACCESS_TOKEN }}
-          deploy-branch: "gh-pages"
+    - name: Checkout
+      uses: actions/checkout@v1
+    - uses: actions/setup-node@v1 #this installs node and npm for us
+      with:
+        node-version: '14.x'
+    - uses: actions/cache@v1 # this allows for re-using node_modules caching, making builds a bit faster.
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-    
+    - name: Build
+      run: |
+        npm install
+        npm run build
+        npm run scully
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: dist/static
